@@ -4,6 +4,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import "../index.css";
 import Slider from "react-slick";
+import { motion } from "framer-motion";
 
 import {
   FaBed,
@@ -26,6 +27,18 @@ import bedroom2Image from "../assets/images/florida-getaway-images/bedroom2.jpeg
 import bathroom1Image from "../assets/images/florida-getaway-images/bathroom1.jpeg";
 import bathroom2Image from "../assets/images/florida-getaway-images/bathroom2.jpeg";
 import backyardImage from "../assets/images/florida-getaway-images/backyard.jpeg";
+
+const fadeIn = {
+  hidden: { opacity: 0, y: 20 },
+  visible: (i = 1) => ({
+    opacity: 1,
+    y: 0,
+    transition: {
+      delay: i * 0.2,
+      duration: 0.6,
+    },
+  }),
+};
 
 function FloridaGetaway() {
   const images = [
@@ -54,8 +67,13 @@ function FloridaGetaway() {
   };
 
   return (
-    <div className="max-w-5xl mx-auto px-6 py-12 bg-gray-50 rounded-lg shadow-xl">
-      <div className="text-center mb-8">
+    <motion.div
+      className="max-w-5xl mx-auto px-6 py-12 bg-gray-50 rounded-lg shadow-xl"
+      initial="hidden"
+      animate="visible"
+      variants={fadeIn}
+    >
+      <motion.div custom={1} variants={fadeIn} className="text-center mb-8">
         <h1 className="text-4xl font-serif font-bold mb-2 text-gray-800">
           Florida Getaway
         </h1>
@@ -64,26 +82,28 @@ function FloridaGetaway() {
           pool, and the warmth of a true home-away-from-home in sunny Port
           Charlotte.
         </p>
-      </div>
-
-      {/* Slider */}
-      <Slider
-        {...settings}
-        className="rounded-xl overflow-hidden shadow-lg mb-10"
+      </motion.div>
+      <motion.div custom={2} variants={fadeIn}>
+        <Slider
+          {...settings}
+          className="rounded-xl overflow-hidden shadow-lg mb-10"
+        >
+          {images.map((image, i) => (
+            <div key={i}>
+              <img
+                src={image}
+                alt={`Slide ${i + 1}`}
+                className="w-full h-[500px] object-cover"
+              />
+            </div>
+          ))}
+        </Slider>
+      </motion.div>
+      <motion.div
+        custom={3}
+        variants={fadeIn}
+        className="grid md:grid-cols-2 gap-6 mb-10 text-gray-700 justify-items-center"
       >
-        {images.map((image, i) => (
-          <div key={i}>
-            <img
-              src={image}
-              alt={`Slide ${i + 1}`}
-              className="w-full h-[500px] object-cover"
-            />
-          </div>
-        ))}
-      </Slider>
-
-      {/* Amenities */}
-      <div className="grid md:grid-cols-2 gap-6 mb-10 text-gray-700 justify-items-center">
         <div className="flex items-center gap-3 text-lg">
           <FaUsers className="text-primary" />6 Guests
         </div>
@@ -105,10 +125,8 @@ function FloridaGetaway() {
           <FaTv className="text-primary" />
           Smart TV & WiFi
         </div>
-      </div>
-
-      {/* Book Button */}
-      <div className="text-center mb-6">
+      </motion.div>
+      <motion.div custom={4} variants={fadeIn} className="text-center mb-6">
         <a
           href="https://www.airbnb.com/rooms/818184240745799799"
           target="_blank"
@@ -118,12 +136,15 @@ function FloridaGetaway() {
             Book Now on Airbnb
           </button>
         </a>
-      </div>
-
-      {/* Navigation Links */}
-      <div className="flex flex-col items-center gap-3">
+      </motion.div>
+      <motion.div
+        custom={5}
+        variants={fadeIn}
+        className="flex flex-col items-center gap-3"
+      >
         <Link
           to="/coastal-cottage"
+          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
           className="text-primary hover:underline font-medium"
         >
           → View Coastal Cottage
@@ -134,8 +155,8 @@ function FloridaGetaway() {
         >
           <FaHome /> Back to Home
         </Link>
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 }
 

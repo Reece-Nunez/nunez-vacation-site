@@ -4,9 +4,9 @@ import CoastalCottage from "./CoastalCottage";
 import Slider from "react-slick";
 import floridaGetawayImage from "../assets/images/florida-getaway-images/exterior.jpeg";
 import coastalCottageImage from "../assets/images/coastal-cottage-images/exterior (1).jpeg";
-import FadeInSection from "../components/FadeInSection";
 import logo from "../assets/images/logo.png";
-import arrowIcon from "../assets/images/arrow.png";
+import arrowIcon from "../assets/images/custom-arrow.png";
+import { motion } from "framer-motion";
 import { FaFacebook, FaInstagram, FaArrowUp } from "react-icons/fa";
 
 function Home() {
@@ -23,6 +23,12 @@ function Home() {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  useEffect(() => {
+    if (selectedProperty !== null) {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  }, [selectedProperty]);
 
   const toggleMenu = () => setMenuOpen(!menuOpen);
 
@@ -65,6 +71,31 @@ function Home() {
     },
   ];
 
+  const arrowButtonStyles =
+    "w-12 h-12 rounded-full bg-white/90 shadow-md hover:shadow-lg border border-gray-200 transition transform hover:scale-105 flex items-center justify-center";
+
+  const NextArrow = ({ onClick }) => (
+    <div
+      className="absolute right-4 top-1/2 transform -translate-y-1/2 z-10"
+      onClick={onClick}
+    >
+      <div className={arrowButtonStyles}>
+        <img src={arrowIcon} alt="Next" className="w-6 h-6 rotate-0" />
+      </div>
+    </div>
+  );
+
+  const PrevArrow = ({ onClick }) => (
+    <div
+      className="absolute left-4 top-1/2 transform -translate-y-1/2 z-10"
+      onClick={onClick}
+    >
+      <div className={arrowButtonStyles}>
+        <img src={arrowIcon} alt="Previous" className="w-6 h-6 rotate-180" />
+      </div>
+    </div>
+  );
+
   const renderStars = (rating) =>
     Array.from({ length: 5 }).map((_, i) => (
       <span
@@ -85,11 +116,36 @@ function Home() {
     slidesToScroll: 1,
     autoplay: true,
     autoplaySpeed: 5000,
+    nextArrow: <NextArrow />,
+    prevArrow: <PrevArrow />,
   };
 
   const resetHome = () => {
     setSelectedProperty(null);
     window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  const staggerContainer = {
+    hidden: {},
+    visible: {
+      transition: {
+        staggerChildren: 0.2,
+      },
+    },
+  };
+
+  const slideUp = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.6, ease: "easeOut" },
+    },
+  };
+
+  const fadeIn = {
+    hidden: { opacity: 0, y: 30 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.8 } },
   };
 
   return (
@@ -99,9 +155,13 @@ function Home() {
           navbarTransparent ? "bg-white/60 shadow" : "bg-white"
         }`}
       >
-        <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
-          {/* Logo + Brand */}
-          <div className="flex items-center gap-3">
+        <motion.div
+          className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between"
+          variants={staggerContainer}
+          initial="hidden"
+          animate="visible"
+        >
+          <motion.div className="flex items-center gap-3" variants={slideUp}>
             <img
               src={logo}
               alt="Nunez Logo"
@@ -111,43 +171,39 @@ function Home() {
             <h1 className="text-xl font-serif font-semibold tracking-wide text-gray-800">
               Nunez Vacation Homes
             </h1>
-          </div>
+          </motion.div>
 
-          {/* Desktop Nav */}
-          <nav className="hidden md:flex items-center gap-8">
+          <motion.nav
+            className="hidden md:flex items-center gap-8"
+            variants={slideUp}
+          >
             <div className="relative group">
               <button className="text-gray-700 hover:text-primary transition font-medium">
                 Rentals ▾
               </button>
-
               <div className="absolute left-0 mt-2 w-48 bg-white shadow-lg rounded-md opacity-0 invisible group-hover:visible group-hover:opacity-100 transition-all duration-200 z-40">
                 <button
-                  onClick={() => {
-                    setSelectedProperty("florida");
-                  }}
+                  onClick={() => setSelectedProperty("florida")}
                   className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                 >
                   Florida Getaway
                 </button>
                 <button
-                  onClick={() => {
-                    setSelectedProperty("coastal");
-                  }}
+                  onClick={() => setSelectedProperty("coastal")}
                   className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                 >
                   Coastal Cottage
                 </button>
               </div>
             </div>
-          </nav>
+          </motion.nav>
 
-          {/* Mobile Toggle */}
-          <div className="md:hidden">
+          <motion.div className="md:hidden" variants={slideUp}>
             <button onClick={toggleMenu} className="text-2xl text-gray-800">
               {menuOpen ? "✕" : "☰"}
             </button>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
 
         {/* Mobile Menu */}
         {menuOpen && (
@@ -177,39 +233,34 @@ function Home() {
       {selectedProperty === "florida" ? (
         <div className="pt-24">
           <FloridaGetaway />
-          <div className="text-center mt-6">
-            <button
-              onClick={resetHome}
-              className="bg-primary text-white px-6 py-2 rounded hover:bg-accent transition"
-            >
-              Back to Home
-            </button>
-          </div>
         </div>
       ) : selectedProperty === "coastal" ? (
         <div className="pt-24">
           <CoastalCottage />
-          <div className="text-center mt-6">
-            <button
-              onClick={resetHome}
-              className="bg-primary text-white px-6 py-2 rounded hover:bg-accent transition"
-            >
-              Back to Home
-            </button>
-          </div>
         </div>
       ) : (
         <>
+          {/* Hero Section */}
           <section
             className="h-screen relative flex flex-col justify-center items-center text-white text-center bg-cover bg-center"
             style={{ backgroundImage: `url('/images/beach-scene.jpg')` }}
           >
             <div className="absolute inset-0 bg-gradient-to-b from-black/60 to-black/40"></div>
-            <div className="relative z-10 p-10 rounded-xl">
-              <h1 className="text-5xl md:text-6xl font-serif mb-6 drop-shadow-lg">
+            <motion.div
+              className="relative z-10 p-10 rounded-xl"
+              variants={staggerContainer}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+            >
+              <motion.h1
+                className="text-5xl md:text-6xl font-serif mb-6 drop-shadow-lg"
+                variants={slideUp}
+              >
                 Your Home Away From Home
-              </h1>
-              <button
+              </motion.h1>
+              <motion.button
+                variants={slideUp}
                 onClick={() =>
                   document
                     .getElementById("property-links")
@@ -218,117 +269,146 @@ function Home() {
                 className="px-8 py-3 bg-primary hover:bg-accent transition rounded text-white font-semibold text-lg shadow-lg"
               >
                 Explore Our Rentals
-              </button>
-            </div>
+              </motion.button>
+            </motion.div>
           </section>
 
           <main className="bg-[#f2e4d9]">
-            <FadeInSection>
-              <section className="p-6 max-w-4xl mx-auto text-center text-lg text-gray-700">
-                <p>
-                  Welcome to your home away from home! Nestled in the beautiful
-                  up-and-coming area of Port Charlotte, Florida. Located on the
-                  Gulf Coast, just 25 minutes from the beach, you can enjoy the
-                  serenity without the stress of overcrowded tourist
-                  destinations. Explore our two stunning homes, conveniently
-                  located right in front of and behind each other, making this
-                  the perfect spot for large family gatherings and reunions.
-                  Take a dip in the pools at either location and bask in all the
-                  relaxation you deserve, surrounded by the meticulous love and
-                  care you’d expect in your own home.
-                </p>
-              </section>
-            </FadeInSection>
+            {/* Intro Text */}
+            <motion.section
+              variants={staggerContainer}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              className="p-6 max-w-4xl mx-auto text-center text-lg text-gray-700"
+            >
+              <motion.p variants={slideUp}>
+                Welcome to your home away from home! Nestled in the beautiful
+                up-and-coming area of Port Charlotte, Florida. Located on the
+                Gulf Coast, just 25 minutes from the beach, you can enjoy the
+                serenity without the stress of overcrowded tourist destinations.
+                Explore our two stunning homes, conveniently located right in
+                front of and behind each other, making this the perfect spot for
+                large family gatherings and reunions. Take a dip in the pools at
+                either location and bask in all the relaxation you deserve,
+                surrounded by the meticulous love and care you’d expect in your
+                own home.
+              </motion.p>
+            </motion.section>
 
-            <FadeInSection>
-              <section
-                id="property-links"
-                className="flex flex-wrap justify-center gap-10 py-12"
+            {/* Property Cards */}
+            <motion.section
+              id="property-links"
+              variants={staggerContainer}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              className="flex flex-wrap justify-center gap-10 py-12"
+            >
+              {/* Florida */}
+              <motion.div
+                variants={slideUp}
+                className="w-80 rounded-xl shadow-lg ..."
               >
-                <div className="w-80 rounded-xl shadow-lg overflow-hidden transform transition duration-300 hover:scale-105 bg-white">
-                  <img
-                    src={floridaGetawayImage}
-                    alt="Florida Getaway"
-                    className="w-full h-64 object-cover"
-                  />
-                  <div className="p-4">
-                    <h3 className="text-xl font-semibold mb-2">
-                      Florida Getaway
-                    </h3>
-                    <button
-                      onClick={() => setSelectedProperty("florida")}
-                      className="w-full text-center bg-primary text-white py-2 rounded hover:bg-accent transition"
-                    >
-                      View Florida Getaway
-                    </button>
-                  </div>
+                <img
+                  src={floridaGetawayImage}
+                  alt="Florida Getaway"
+                  className="w-full h-64 object-cover"
+                />
+                <div className="p-4">
+                  <h3 className="text-xl font-semibold mb-2">
+                    Florida Getaway
+                  </h3>
+                  <button
+                    onClick={() => setSelectedProperty("florida")}
+                    className="w-full text-center bg-primary text-white py-2 rounded hover:bg-accent transition"
+                  >
+                    View Florida Getaway
+                  </button>
                 </div>
+              </motion.div>
 
-                <div className="w-80 rounded-xl shadow-lg overflow-hidden transform transition duration-300 hover:scale-105 bg-white">
-                  <img
-                    src={coastalCottageImage}
-                    alt="Coastal Cottage"
-                    className="w-full h-64 object-cover"
-                  />
-                  <div className="p-4">
-                    <h3 className="text-xl font-semibold mb-2">
-                      Coastal Cottage
-                    </h3>
-                    <button
-                      onClick={() => setSelectedProperty("coastal")}
-                      className="w-full text-center bg-primary text-white py-2 rounded hover:bg-accent transition"
-                    >
-                      View Coastal Cottage
-                    </button>
-                  </div>
+              {/* Coastal */}
+              <motion.div
+                variants={slideUp}
+                className="w-80 rounded-xl shadow-lg ..."
+              >
+                <img
+                  src={coastalCottageImage}
+                  alt="Coastal Cottage"
+                  className="w-full h-64 object-cover"
+                />
+                <div className="p-4">
+                  <h3 className="text-xl font-semibold mb-2">
+                    Coastal Cottage
+                  </h3>
+                  <button
+                    onClick={() => setSelectedProperty("coastal")}
+                    className="w-full text-center bg-primary text-white py-2 rounded hover:bg-accent transition"
+                  >
+                    View Coastal Cottage
+                  </button>
                 </div>
-              </section>
-            </FadeInSection>
+              </motion.div>
+            </motion.section>
 
-            <FadeInSection>
-              <section className="bg-gradient-to-br from-[#f2e4d9] via-[#f7f3ed] to-[#f2e4d9] py-20 px-4">
-                <h2 className="text-4xl font-serif text-center mb-12 text-gray-800">
-                  What Our Guests Are Saying
-                </h2>
-                <div className="flex justify-center">
-                  <Slider {...settings} className="w-full max-w-4xl">
-                    {reviews.map((review, i) => (
-                      <div key={i} className="review-slide">
-                        <div className="relative bg-white rounded-3xl px-6 py-8 md:p-10 shadow-xl border border-gray-100 w-full max-w-2xl mx-auto hover:shadow-2xl transition-all duration-300">
-                          {/* Avatar + Quote */}
-                          <div className="flex items-center gap-4 mb-6">
-                            <div className="w-12 h-12 flex items-center justify-center rounded-full bg-yellow-100 text-yellow-600 font-bold text-xl shadow-inner">
-                              {review.name.charAt(0)}
-                            </div>
-                            <div className="text-yellow-400 text-3xl leading-none opacity-50">
-                              “
-                            </div>
+            {/* Reviews */}
+            <motion.section
+              variants={staggerContainer}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              className="bg-gradient-to-br from-[#f2e4d9] via-[#f7f3ed] to-[#f2e4d9] py-20 px-4"
+            >
+              <motion.h2
+                variants={slideUp}
+                className="text-4xl font-serif text-center mb-12 text-gray-800"
+              >
+                What Our Guests Are Saying
+              </motion.h2>
+              <motion.div variants={slideUp} className="flex justify-center">
+                <Slider {...settings} className="w-full max-w-4xl">
+                  {reviews.map((review, i) => (
+                    <div key={i} className="review-slide">
+                      <div className="relative bg-white rounded-3xl px-6 py-8 md:p-10 shadow-xl border border-gray-100 w-full max-w-2xl mx-auto hover:shadow-2xl transition-all duration-300">
+                        {/* Avatar and Opening Quote */}
+                        <div className="flex items-center gap-4 mb-6">
+                          <div className="w-12 h-12 flex items-center justify-center rounded-full bg-yellow-100 text-yellow-600 font-bold text-xl shadow-inner">
+                            {review.name.charAt(0)}
                           </div>
+                          <div className="text-yellow-400 text-4xl leading-none opacity-70">
+                            “
+                          </div>
+                        </div>
 
+                        {/* Review Text */}
+                        <div className="relative">
                           <p className="text-gray-800 text-lg md:text-xl italic font-light leading-relaxed">
                             {review.text}
                           </p>
-                          <div className="text-yellow-400 text-3xl leading-none opacity-50">
-                            “
+                          <div className="text-yellow-400 text-4xl leading-none opacity-70 text-right mt-2 pr-1">
+                            ”
                           </div>
-                          <div className="mt-6 pt-4 border-t border-gray-200">
-                            <p className="font-semibold text-gray-900 text-base">
-                              - {review.name}
-                            </p>
-                            <p className="text-sm text-gray-500">
-                              {review.property}
-                            </p>
-                            <div className="mt-1 text-yellow-400 text-base">
-                              {renderStars(review.rating)}
-                            </div>
+                        </div>
+
+                        {/* Footer */}
+                        <div className="mt-6 pt-4 border-t border-gray-200">
+                          <p className="font-semibold text-gray-900 text-base">
+                            - {review.name}
+                          </p>
+                          <p className="text-sm text-gray-500">
+                            {review.property}
+                          </p>
+                          <div className="mt-1 text-yellow-400 text-base">
+                            {renderStars(review.rating)}
                           </div>
                         </div>
                       </div>
-                    ))}
-                  </Slider>
-                </div>
-              </section>
-            </FadeInSection>
+                    </div>
+                  ))}
+                </Slider>
+              </motion.div>
+            </motion.section>
           </main>
         </>
       )}
