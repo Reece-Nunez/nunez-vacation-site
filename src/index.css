@@ -1,0 +1,9 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.review-slide {
+    display: flex !important;
+    justify-content: center;
+  }
+  

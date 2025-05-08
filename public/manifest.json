@@ -1,0 +1,8 @@
+{
+  "short_name": "Airbnb Homes",
+  "name": "Lisa's Florida Vacation Homes",
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#000000",
+  "background_color": "#ffffff"
+}
