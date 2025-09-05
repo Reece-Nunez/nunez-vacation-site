@@ -1,5 +1,4 @@
-import React from 'react';
-import { Helmet } from 'react-helmet-async';
+import React, { useEffect } from 'react';
 
 const SEO = ({ 
   title = "Nunez Vacation Homes | Luxury Vacation Rentals in Port Charlotte, Florida",
@@ -86,69 +85,74 @@ const SEO = ({
     };
   }
 
-  return (
-    <Helmet>
-      {/* Basic Meta Tags */}
-      <title>{title}</title>
-      <meta name="description" content={description} />
-      <meta name="keywords" content={keywords} />
-      <meta name="author" content="Nunez Vacation Homes" />
-      <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
-      <link rel="canonical" href={url} />
-      
-      {/* Open Graph Tags */}
-      <meta property="og:type" content={type} />
-      <meta property="og:title" content={title} />
-      <meta property="og:description" content={description} />
-      <meta property="og:image" content={image} />
-      <meta property="og:url" content={url} />
-      <meta property="og:site_name" content="Nunez Vacation Homes" />
-      <meta property="og:locale" content="en_US" />
-      
-      {/* Twitter Card Tags */}
-      <meta name="twitter:card" content="summary_large_image" />
-      <meta name="twitter:title" content={title} />
-      <meta name="twitter:description" content={description} />
-      <meta name="twitter:image" content={image} />
-      <meta name="twitter:site" content="@nunezvacationhomes" />
-      <meta name="twitter:creator" content="@nunezvacationhomes" />
-      
-      {/* Additional SEO Meta Tags */}
-      <meta name="theme-color" content="#1d383f" />
-      <meta name="msapplication-TileColor" content="#1d383f" />
-      <meta name="format-detection" content="telephone=no" />
-      
-      {/* Geo Meta Tags */}
-      <meta name="geo.region" content="US-FL" />
-      <meta name="geo.placename" content="Port Charlotte, Florida" />
-      <meta name="geo.position" content="26.976;-82.091" />
-      <meta name="ICBM" content="26.976, -82.091" />
-      
-      {/* Business-specific Meta Tags */}
-      <meta name="classification" content="vacation rentals, hospitality" />
-      <meta name="coverage" content="Worldwide" />
-      <meta name="distribution" content="Global" />
-      <meta name="rating" content="General" />
-      <meta name="revisit-after" content="7 days" />
-      
-      {/* Structured Data */}
-      <script type="application/ld+json">
-        {JSON.stringify(finalStructuredData)}
-      </script>
-      
-      {/* Preconnect to external domains */}
-      <link rel="preconnect" href="https://fonts.googleapis.com" />
-      <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-      <link rel="preconnect" href="https://www.airbnb.com" />
-      <link rel="preconnect" href="https://facebook.com" />
-      <link rel="preconnect" href="https://instagram.com" />
-      
-      {/* DNS Prefetch */}
-      <link rel="dns-prefetch" href="//fonts.googleapis.com" />
-      <link rel="dns-prefetch" href="//fonts.gstatic.com" />
-      <link rel="dns-prefetch" href="//www.google-analytics.com" />
-    </Helmet>
-  );
+  useEffect(() => {
+    // Update document title
+    document.title = title;
+    
+    // Helper function to update or create meta tag
+    const updateMetaTag = (name, content, property = false) => {
+      const selector = property ? `meta[property="${name}"]` : `meta[name="${name}"]`;
+      let meta = document.querySelector(selector);
+      if (!meta) {
+        meta = document.createElement('meta');
+        if (property) {
+          meta.setAttribute('property', name);
+        } else {
+          meta.setAttribute('name', name);
+        }
+        document.head.appendChild(meta);
+      }
+      meta.setAttribute('content', content);
+    };
+    
+    // Update basic meta tags
+    updateMetaTag('description', description);
+    updateMetaTag('keywords', keywords);
+    updateMetaTag('author', 'Nunez Vacation Homes');
+    updateMetaTag('robots', 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1');
+    updateMetaTag('theme-color', '#1d383f');
+    
+    // Update Open Graph tags
+    updateMetaTag('og:type', type, true);
+    updateMetaTag('og:title', title, true);
+    updateMetaTag('og:description', description, true);
+    updateMetaTag('og:image', image, true);
+    updateMetaTag('og:url', url, true);
+    updateMetaTag('og:site_name', 'Nunez Vacation Homes', true);
+    updateMetaTag('og:locale', 'en_US', true);
+    
+    // Update Twitter Card tags
+    updateMetaTag('twitter:card', 'summary_large_image');
+    updateMetaTag('twitter:title', title);
+    updateMetaTag('twitter:description', description);
+    updateMetaTag('twitter:image', image);
+    
+    // Update canonical link
+    let canonical = document.querySelector('link[rel="canonical"]');
+    if (!canonical) {
+      canonical = document.createElement('link');
+      canonical.setAttribute('rel', 'canonical');
+      document.head.appendChild(canonical);
+    }
+    canonical.setAttribute('href', url);
+    
+    // Update structured data
+    let structuredDataScript = document.querySelector('script[type="application/ld+json"]');
+    if (!structuredDataScript) {
+      structuredDataScript = document.createElement('script');
+      structuredDataScript.setAttribute('type', 'application/ld+json');
+      document.head.appendChild(structuredDataScript);
+    }
+    structuredDataScript.textContent = JSON.stringify(finalStructuredData);
+    
+    // Cleanup function
+    return () => {
+      // Reset title to default when component unmounts
+      document.title = "Nunez Vacation Homes | Luxury Vacation Rentals in Port Charlotte, Florida";
+    };
+  }, [title, description, keywords, image, url, type, finalStructuredData]);
+  
+  return null;
 };
 
 export default SEO;
