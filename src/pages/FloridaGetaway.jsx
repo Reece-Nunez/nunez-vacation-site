@@ -5,6 +5,9 @@ import "slick-carousel/slick/slick-theme.css";
 import "../index.css";
 import Slider from "react-slick";
 import { motion } from "framer-motion";
+import SEO from "../components/SEO";
+import AirbnbBooking from "../components/AirbnbBooking";
+import AirbnbAvailability from "../components/AirbnbAvailability";
 
 import {
   FaBed,
@@ -66,13 +69,36 @@ function FloridaGetaway() {
     arrows: true,
   };
 
+  const propertyData = {
+    name: "Florida Getaway",
+    slug: "florida-getaway",
+    description: "Your perfect winter escape awaits. Enjoy peaceful evenings, a private heated pool, and the warmth of a true home-away-from-home in sunny Port Charlotte, Florida.",
+    bedrooms: 3,
+    bathrooms: 2,
+    maxGuests: 6,
+    amenities: ["Heated Pool", "Full Kitchen", "WiFi", "TV", "Air Conditioning", "Washer/Dryer", "Parking", "Pool Table"],
+    rating: 5,
+    reviewCount: 15
+  };
+
   return (
-    <motion.div
-      className="max-w-5xl mx-auto px-6 py-12 bg-gray-50 rounded-lg shadow-xl"
-      initial="hidden"
-      animate="visible"
-      variants={fadeIn}
-    >
+    <>
+      <SEO 
+        title="Florida Getaway | Luxury 3BR Vacation Rental with Heated Pool in Port Charlotte"
+        description="Book Florida Getaway - a stunning 3-bedroom, 2-bathroom vacation rental with heated pool in Port Charlotte, FL. Perfect for families, sleeps 6, near Gulf Coast beaches."
+        keywords="Florida Getaway Port Charlotte, 3 bedroom vacation rental Florida, heated pool vacation rental, Port Charlotte vacation home, Gulf Coast vacation rental, family vacation rental Florida"
+        url="https://nunezvacationhomes.com/florida-getaway"
+        type="product"
+        property={propertyData}
+        price="150"
+        availability="InStock"
+      />
+      <motion.div
+        className="max-w-5xl mx-auto px-6 py-12 bg-gray-50 rounded-lg shadow-xl"
+        initial="hidden"
+        animate="visible"
+        variants={fadeIn}
+      >
       <motion.div custom={1} variants={fadeIn} className="text-center mb-8">
         <h1 className="text-4xl font-serif font-bold mb-2 text-gray-800">
           Florida Getaway
@@ -157,6 +183,7 @@ function FloridaGetaway() {
         </Link>
       </motion.div>
     </motion.div>
+    </>
   );
 }
 

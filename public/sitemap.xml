@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
+        xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+  
+  <!-- Homepage -->
+  <url>
+    <loc>https://nunezvacationhomes.com/</loc>
+    <lastmod>2025-09-04</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+    <image:image>
+      <image:loc>https://nunezvacationhomes.com/images/beach-scene.jpg</image:loc>
+      <image:title>Nunez Vacation Homes - Port Charlotte Beach Scene</image:title>
+      <image:caption>Beautiful beach scene near our Port Charlotte vacation rentals</image:caption>
+    </image:image>
+  </url>
+
+  <!-- Florida Getaway Property -->
+  <url>
+    <loc>https://nunezvacationhomes.com/florida-getaway</loc>
+    <lastmod>2025-09-04</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://nunezvacationhomes.com/images/florida-getaway-images/exterior.jpeg</image:loc>
+      <image:title>Florida Getaway - Exterior View</image:title>
+      <image:caption>Beautiful exterior view of Florida Getaway vacation rental in Port Charlotte</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://nunezvacationhomes.com/images/florida-getaway-images/pool.jpeg</image:loc>
+      <image:title>Florida Getaway - Heated Pool</image:title>
+      <image:caption>Heated swimming pool at Florida Getaway vacation rental</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://nunezvacationhomes.com/images/florida-getaway-images/living-room.jpeg</image:loc>
+      <image:title>Florida Getaway - Living Room</image:title>
+      <image:caption>Comfortable living room in Florida Getaway vacation rental</image:caption>
+    </image:image>
+  </url>
+
+  <!-- Coastal Cottage Property -->
+  <url>
+    <loc>https://nunezvacationhomes.com/coastal-cottage</loc>
+    <lastmod>2025-09-04</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://nunezvacationhomes.com/images/coastal-cottage-images/exterior.jpeg</image:loc>
+      <image:title>Coastal Cottage - Exterior View</image:title>
+      <image:caption>Charming exterior view of Coastal Cottage vacation rental in Port Charlotte</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://nunezvacationhomes.com/images/coastal-cottage-images/pool.jpeg</image:loc>
+      <image:title>Coastal Cottage - Swimming Pool</image:title>
+      <image:caption>Refreshing swimming pool at Coastal Cottage vacation rental</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://nunezvacationhomes.com/images/coastal-cottage-images/living-room.jpeg</image:loc>
+      <image:title>Coastal Cottage - Living Room</image:title>
+      <image:caption>Cozy living room in Coastal Cottage vacation rental</image:caption>
+    </image:image>
+  </url>
+
+</urlset>

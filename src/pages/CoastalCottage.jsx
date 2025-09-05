@@ -5,6 +5,7 @@ import "slick-carousel/slick/slick-theme.css";
 import "../index.css";
 import Slider from "react-slick";
 import { motion } from "framer-motion";
+import SEO from "../components/SEO";
 import {
   FaBed,
   FaBath,
@@ -65,13 +66,36 @@ function CoastalCottage() {
     arrows: true,
   };
 
+  const propertyData = {
+    name: "Coastal Cottage",
+    slug: "coastal-cottage",
+    description: "A serene retreat just minutes from the coast — cozy, clean, and perfect for families or couples looking to relax and recharge in beautiful Port Charlotte, Florida.",
+    bedrooms: 2,
+    bathrooms: 2,
+    maxGuests: 4,
+    amenities: ["Swimming Pool", "Full Kitchen", "WiFi", "TV", "Air Conditioning", "Washer/Dryer", "Parking", "Patio"],
+    rating: 5,
+    reviewCount: 8
+  };
+
   return (
-    <motion.div
-      className="max-w-5xl mx-auto px-6 py-12 bg-gray-50 rounded-lg shadow-xl"
-      variants={stagger}
-      initial="hidden"
-      animate="visible"
-    >
+    <>
+      <SEO 
+        title="Coastal Cottage | Charming 2BR Vacation Rental with Pool in Port Charlotte"
+        description="Book Coastal Cottage - a cozy 2-bedroom, 2-bathroom vacation rental with pool in Port Charlotte, FL. Perfect for couples and small families, sleeps 4, minutes from beaches."
+        keywords="Coastal Cottage Port Charlotte, 2 bedroom vacation rental Florida, pool vacation rental, Port Charlotte cottage, Gulf Coast cottage rental, romantic vacation rental Florida"
+        url="https://nunezvacationhomes.com/coastal-cottage"
+        type="product"
+        property={propertyData}
+        price="130"
+        availability="InStock"
+      />
+      <motion.div
+        className="max-w-5xl mx-auto px-6 py-12 bg-gray-50 rounded-lg shadow-xl"
+        variants={stagger}
+        initial="hidden"
+        animate="visible"
+      >
       <motion.div className="text-center mb-8" variants={fadeIn}>
         <h1 className="text-4xl font-serif font-bold mb-2 text-gray-800">
           Coastal Cottage
@@ -172,6 +196,7 @@ function CoastalCottage() {
         </Link>
       </motion.div>
     </motion.div>
+    </>
   );
 }
 
