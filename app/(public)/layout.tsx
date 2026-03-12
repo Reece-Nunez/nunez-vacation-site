@@ -1,6 +1,10 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import { generateOrganizationJsonLd } from "@/lib/metadata";
+import {
+  generateOrganizationJsonLd,
+  generateWebsiteJsonLd,
+  generateFAQJsonLd,
+} from "@/lib/metadata";
 
 export default function PublicLayout({
   children,
@@ -16,6 +20,18 @@ export default function PublicLayout({
         type="application/ld+json"
         dangerouslySetInnerHTML={{
           __html: JSON.stringify(generateOrganizationJsonLd()),
+        }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(generateWebsiteJsonLd()),
+        }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(generateFAQJsonLd()),
         }}
       />
     </>

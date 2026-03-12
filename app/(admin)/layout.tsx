@@ -40,6 +40,7 @@ export default function AdminLayout({
 
   return (
     <div className="min-h-screen bg-gray-50 flex">
+      <meta name="robots" content="noindex, nofollow" />
       {/* Sidebar */}
       <aside className="w-64 bg-primary-900 text-white flex flex-col shrink-0">
         <div className="p-6 border-b border-primary-700">

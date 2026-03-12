@@ -9,14 +9,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
     lastModified: new Date(),
     changeFrequency: "weekly" as const,
     priority: 0.9,
+    images: property.images.map(
+      (img) => `${baseUrl}${img.src}`
+    ),
   }));
 
   return [
     {
       url: baseUrl,
       lastModified: new Date(),
-      changeFrequency: "weekly",
+      changeFrequency: "weekly" as const,
       priority: 1,
+      images: [`${baseUrl}/images/og-image.jpg`],
     },
     ...propertyPages,
   ];

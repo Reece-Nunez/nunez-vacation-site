@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "sonner";
@@ -6,46 +6,83 @@ import { Toaster } from "sonner";
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
+  display: "swap",
 });
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
   variable: "--font-playfair",
+  display: "swap",
 });
 
+const SITE_URL = "https://nunezvacationhomes.com";
+const SITE_NAME = "Nunez Vacation Homes";
+
+export const viewport: Viewport = {
+  themeColor: "#1d383f",
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+};
+
 export const metadata: Metadata = {
-  metadataBase: new URL("https://nunezvacationhomes.com"),
+  metadataBase: new URL(SITE_URL),
   title: {
-    default: "Nunez Vacation Homes | Luxury Rentals in Port Charlotte, FL",
+    default:
+      "Nunez Vacation Homes | Luxury Vacation Rentals in Port Charlotte, FL",
     template: "%s | Nunez Vacation Homes",
   },
   description:
-    "Experience luxury vacation rentals in Port Charlotte, Florida. Two stunning homes with heated pools, near Gulf Coast beaches. Perfect for families, reunions, and relaxing getaways.",
+    "Book luxury vacation rentals in Port Charlotte, Florida. Two stunning Superhost homes with heated saltwater pools, minutes from Gulf Coast beaches. Sleeps up to 14 guests — perfect for families, reunions, and group getaways.",
   keywords: [
+    // Primary keywords
     "Port Charlotte vacation rental",
-    "Florida vacation home",
-    "Gulf Coast rental",
-    "heated pool rental",
-    "family vacation Florida",
-    "Port Charlotte FL",
-    "beach house rental",
+    "Port Charlotte FL Airbnb",
+    "Florida Gulf Coast vacation home",
+    "heated pool vacation rental Florida",
+    // Long-tail keywords
+    "family vacation rental Port Charlotte FL",
+    "beach house rental near Englewood FL",
+    "vacation home with pool near Punta Gorda",
+    "Airbnb Superhost Port Charlotte",
+    "large group vacation rental southwest Florida",
+    "pet friendly vacation rental Port Charlotte",
+    // Geo modifiers
+    "vacation rental near Boca Grande",
+    "rental home near Englewood Beach",
+    "Charlotte County vacation rental",
+    "southwest Florida vacation home",
+    // Intent keywords
+    "best Airbnb Port Charlotte FL",
+    "luxury Airbnb with pool Florida",
+    "family reunion rental Florida Gulf Coast",
+    "snowbird rental Port Charlotte",
   ],
-  authors: [{ name: "Nunez Vacation Homes" }],
-  creator: "Nunez Vacation Homes",
+  authors: [{ name: SITE_NAME }],
+  creator: SITE_NAME,
+  publisher: SITE_NAME,
+  formatDetection: {
+    telephone: true,
+    email: true,
+    address: true,
+  },
+  category: "Travel",
+  classification: "Vacation Rentals",
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://nunezvacationhomes.com",
-    siteName: "Nunez Vacation Homes",
+    url: SITE_URL,
+    siteName: SITE_NAME,
     title: "Nunez Vacation Homes | Luxury Rentals in Port Charlotte, FL",
     description:
-      "Experience luxury vacation rentals in Port Charlotte, Florida. Stunning homes with pools near Gulf Coast beaches.",
+      "Two stunning Superhost vacation homes with heated saltwater pools in Port Charlotte, FL. Minutes from Gulf Coast beaches. Book direct for the best rates.",
     images: [
       {
-        url: "/images/beach-scene.jpg",
+        url: "/images/og-image.jpg",
         width: 1200,
         height: 630,
-        alt: "Nunez Vacation Homes - Port Charlotte, Florida",
+        alt: "Nunez Vacation Homes — Luxury rentals with heated pools in Port Charlotte, Florida",
+        type: "image/jpeg",
       },
     ],
   },
@@ -53,8 +90,13 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Nunez Vacation Homes | Luxury Rentals in Port Charlotte, FL",
     description:
-      "Experience luxury vacation rentals in Port Charlotte, Florida.",
-    images: ["/images/beach-scene.jpg"],
+      "Two stunning Superhost vacation homes with heated saltwater pools in Port Charlotte, FL. Minutes from Gulf Coast beaches.",
+    images: [
+      {
+        url: "/images/og-image.jpg",
+        alt: "Nunez Vacation Homes — Luxury rentals with heated pools in Port Charlotte, Florida",
+      },
+    ],
   },
   robots: {
     index: true,
@@ -68,7 +110,10 @@ export const metadata: Metadata = {
     },
   },
   alternates: {
-    canonical: "https://nunezvacationhomes.com",
+    canonical: SITE_URL,
+  },
+  other: {
+    "google-site-verification": "",
   },
 };
 
