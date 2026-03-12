@@ -1,13 +1,31 @@
 {
   "permissions": {
     "allow": [
-      "Bash(npm install:*)",
-      "Bash(npm run build:*)",
-      "Bash(npm run dev:*)",
-      "Bash(npm run lint)",
-      "Read(/C:\\Users\\reece\\Downloads/**)"
-    ],
-    "deny": [],
-    "ask": []
+      "Bash(cd \"C:/Users/reece/Documents/NunezDev/nunez-vacation-site\" && mkdir -p public/images/properties/florida-getaway public/images/properties/coastal-cottage)",
+      "Bash(cd \"C:/Users/reece/Documents/NunezDev/nunez-vacation-site\" && cp nunez-vacation-site/src/assets/images/florida-getaway-images/*.jpeg public/images/properties/florida-getaway/ && cp nunez-vacation-site/src/assets/images/logo.png public/images/ && cp nunez-vacation-site/public/images/beach-scene.jpg public/images/ && cp nunez-vacation-site/public/images/beach-back.jpg public/images/ && cp nunez-vacation-site/public/images/starfish.jpg public/images/)",
+      "Bash(cd \"C:/Users/reece/Documents/NunezDev/nunez-vacation-site\" && rm -rf src dist node_modules package-lock.json && ls)",
+      "Bash(cd \"C:/Users/reece/Documents/NunezDev/nunez-vacation-site\" && npm install 2>&1)",
+      "Bash(cd \"C:/Users/reece/Documents/NunezDev/nunez-vacation-site\" && npx next build 2>&1)",
+      "Bash(cd \"C:/Users/reece/Documents/NunezDev/nunez-vacation-site\" && npm run dev 2>&1)",
+      "Bash(cd \"C:/Users/reece/Documents/NunezDev/nunez-vacation-site\" && npx next build 2>&1 | head -30)",
+      "Bash(cd \"C:/Users/reece/Documents/NunezDev/nunez-vacation-site\" && rm -rf .next && npx next build 2>&1 | tail -5)",
+      "Bash(cd \"C:/Users/reece/Documents/NunezDev/nunez-vacation-site\" && node -e \"try { require\\('tailwindcss'\\); console.log\\('tailwindcss found'\\); } catch\\(e\\) { console.log\\('tailwindcss NOT found'\\); }\" && node -e \"try { require\\('autoprefixer'\\); console.log\\('autoprefixer found'\\); } catch\\(e\\) { console.log\\('autoprefixer NOT found'\\); }\")",
+      "Bash(cd \"C:/Users/reece/Documents/NunezDev/nunez-vacation-site\" && node -e \"const cfg = require\\('./tailwind.config.ts'\\); console.log\\(cfg\\);\" 2>&1)",
+      "Bash(rm \"C:/Users/reece/Documents/NunezDev/nunez-vacation-site/postcss.config.js\" && cd \"C:/Users/reece/Documents/NunezDev/nunez-vacation-site\" && rm -rf .next && npx next build 2>&1 | tail -20)",
+      "Bash(cd \"C:/Users/reece/Documents/NunezDev/nunez-vacation-site\" && rm -rf .next && npm run dev 2>&1)",
+      "Bash(ls C:/Users/reece/Documents/NunezDev/nunez-vacation-site/node_modules/@heroicons/react/24/outline/*.js | sed 's/.*\\\\///' | sed 's/Icon\\\\.js//' | tr '\\\\n' ', ' | fold -s -w 120)",
+      "Bash(cd C:/Users/reece/Documents/NunezDev/nunez-vacation-site && npm install lucide-react)",
+      "Bash(cd C:/Users/reece/Documents/NunezDev/nunez-vacation-site && mkdir -p app/\\\\\\(public\\\\\\) && mkdir -p app/\\\\\\(admin\\\\\\)/admin/expenses/new && mkdir -p \"app/\\(admin\\)/admin/expenses/[id]/edit\" && mkdir -p lib/admin && mkdir -p components/admin)",
+      "Bash(cd C:/Users/reece/Documents/NunezDev/nunez-vacation-site && mv app/page.tsx \"app/\\(public\\)/\" && mv app/not-found.tsx \"app/\\(public\\)/\" && mv app/properties \"app/\\(public\\)/\" && mv app/robots.ts \"app/\\(public\\)/\" && mv app/sitemap.ts \"app/\\(public\\)/\")",
+      "Bash(cd C:/Users/reece/Documents/NunezDev/nunez-vacation-site && cp -r app/properties \"app/\\(public\\)/\" && rm -rf app/properties)",
+      "Bash(cd C:/Users/reece/Documents/NunezDev/nunez-vacation-site && npx next build 2>&1 | tail -30)",
+      "Bash(cd C:/Users/reece/Documents/NunezDev/nunez-vacation-site && rm -rf .next && npx next build 2>&1 | tail -15)",
+      "Bash(cd C:/Users/reece/Documents/NunezDev/nunez-vacation-site && mv \"app/\\(public\\)/robots.ts\" app/ && mv \"app/\\(public\\)/sitemap.ts\" app/)",
+      "Bash(ls \"C:/Users/reece/Documents/NunezDev/nunez-vacation-site/app/\\(public\\)/\")",
+      "Bash(cd C:/Users/reece/Documents/NunezDev/nunez-vacation-site && npm install @supabase/supabase-js)",
+      "Bash(cd C:/Users/reece/Documents/NunezDev/nunez-vacation-site && npx next build 2>&1 | tail -20)",
+      "Bash(cd C:/Users/reece/Documents/NunezDev/nunez-vacation-site && mkdir -p \"app/\\(admin\\)/admin/tax-report\" && mkdir -p \"app/\\(admin\\)/admin/maintenance/new\")",
+      "Bash(cd C:/Users/reece/Documents/NunezDev/nunez-vacation-site && npx next build 2>&1 | tail -25)"
+    ]
   }
 }
