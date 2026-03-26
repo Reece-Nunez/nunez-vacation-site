@@ -4,13 +4,15 @@ import { useState, useEffect, useMemo } from "react";
 import Link from "next/link";
 import { PlusCircleIcon } from "@heroicons/react/24/outline";
 import { properties } from "@/lib/data";
-import { Expense, EXPENSE_CATEGORIES, ExpenseCategory } from "@/lib/admin/types";
+import { Expense } from "@/lib/admin/types";
+import { useCategories } from "@/lib/admin/useCategories";
 import { getExpenses, formatCents } from "@/lib/admin/storage";
 
 export default function AdminDashboard() {
   const [expenses, setExpenses] = useState<Expense[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
+  const { allCategories } = useCategories();
 
   useEffect(() => {
     getExpenses()
@@ -38,12 +40,12 @@ export default function AdminDashboard() {
       (e) => e.propertySlug === slug
     );
     const total = propExpenses.reduce((sum, e) => sum + e.amount, 0);
-    const byCategory = Object.entries(EXPENSE_CATEGORIES)
+    const byCategory = Object.entries(allCategories)
       .map(([key, label]) => {
         const catTotal = propExpenses
           .filter((e) => e.category === key)
           .reduce((sum, e) => sum + e.amount, 0);
-        return { key: key as ExpenseCategory, label, total: catTotal };
+        return { key, label, total: catTotal };
       })
       .filter((c) => c.total > 0);
     byCategory.sort((a, b) => b.total - a.total);

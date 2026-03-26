@@ -8,7 +8,8 @@ import {
   CameraIcon,
 } from "@heroicons/react/24/outline";
 import { properties } from "@/lib/data";
-import { Expense, EXPENSE_CATEGORIES } from "@/lib/admin/types";
+import { Expense } from "@/lib/admin/types";
+import { useCategories } from "@/lib/admin/useCategories";
 import { deleteExpense, formatCents } from "@/lib/admin/storage";
 
 interface ExpenseTableProps {
@@ -24,6 +25,7 @@ export default function ExpenseTable({
   expenses,
   onDelete,
 }: ExpenseTableProps) {
+  const { getCategoryLabel } = useCategories();
   async function handleDelete(expense: Expense) {
     if (
       !confirm(
@@ -78,7 +80,7 @@ export default function ExpenseTable({
               </td>
               <td className="py-3 pr-4 whitespace-nowrap">
                 <span className="bg-primary-50 text-primary-700 text-xs font-medium px-2 py-0.5 rounded-full">
-                  {EXPENSE_CATEGORIES[expense.category]}
+                  {getCategoryLabel(expense.category)}
                 </span>
               </td>
               <td className="py-3 pr-4">

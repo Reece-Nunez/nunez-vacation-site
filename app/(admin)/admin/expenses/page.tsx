@@ -7,7 +7,8 @@ import {
   ArrowDownTrayIcon,
 } from "@heroicons/react/24/outline";
 import { properties } from "@/lib/data";
-import { Expense, ExpenseCategory, EXPENSE_CATEGORIES } from "@/lib/admin/types";
+import { Expense } from "@/lib/admin/types";
+import { useCategories } from "@/lib/admin/useCategories";
 import { getExpenses, exportExpensesCSV, formatCents } from "@/lib/admin/storage";
 import ExpenseTable from "@/components/admin/ExpenseTable";
 
@@ -19,6 +20,7 @@ export default function ExpensesPage() {
   const [yearFilter, setYearFilter] = useState<number>(
     new Date().getFullYear()
   );
+  const { allCategories } = useCategories();
 
   const loadExpenses = useCallback(() => {
     getExpenses()
@@ -113,7 +115,7 @@ export default function ExpensesPage() {
           className={selectClass}
         >
           <option value="all">All Categories</option>
-          {Object.entries(EXPENSE_CATEGORIES).map(([key, label]) => (
+          {Object.entries(allCategories).map(([key, label]) => (
             <option key={key} value={key}>
               {label}
             </option>

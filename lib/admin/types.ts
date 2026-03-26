@@ -60,7 +60,7 @@ export const SCHEDULE_E_LINES: Record<
 export interface Expense {
   id: string;
   propertySlug: string;
-  category: ExpenseCategory;
+  category: string;
   amount: number; // stored in cents
   description: string;
   date: string; // YYYY-MM-DD
@@ -101,5 +101,38 @@ export interface MaintenanceTask {
   lastCompleted?: string; // YYYY-MM-DD
   nextDue: string; // YYYY-MM-DD
   status: MaintenanceStatus;
+  createdAt: string;
+}
+
+export type RecurringFrequency = "monthly" | "quarterly" | "annually";
+
+export const RECURRING_FREQUENCIES: Record<RecurringFrequency, string> = {
+  monthly: "Monthly",
+  quarterly: "Quarterly",
+  annually: "Annually",
+};
+
+export interface RecurringExpense {
+  id: string;
+  propertySlug: string;
+  category: string;
+  amount: number; // stored in cents
+  description: string;
+  vendor?: string;
+  frequency: RecurringFrequency;
+  active: boolean;
+  createdAt: string;
+}
+
+export interface SavedVendor {
+  id: string;
+  name: string;
+  createdAt: string;
+}
+
+export interface SavedCategory {
+  id: string;
+  key: string;
+  label: string;
   createdAt: string;
 }

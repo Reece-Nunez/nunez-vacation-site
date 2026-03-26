@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { CameraIcon, XMarkIcon, PhotoIcon } from "@heroicons/react/24/outline";
@@ -9,8 +9,11 @@ import {
   Expense,
   ExpenseCategory,
   EXPENSE_CATEGORIES,
+  SavedVendor,
 } from "@/lib/admin/types";
 import { saveExpense, updateExpense } from "@/lib/admin/storage";
+import { useCategories } from "@/lib/admin/useCategories";
+import { getSavedVendors, saveSavedVendor, deleteSavedVendor } from "@/lib/admin/recurring";
 import { compressImage } from "@/lib/admin/image";
 
 interface ExpenseFormProps {
@@ -25,7 +28,7 @@ export default function ExpenseForm({ expense }: ExpenseFormProps) {
   const [propertySlug, setPropertySlug] = useState(
     expense?.propertySlug || ""
   );
-  const [category, setCategory] = useState<ExpenseCategory | "">(
+  const [category, setCategory] = useState<string>(
     expense?.category || ""
   );
   const [amount, setAmount] = useState(
@@ -45,6 +48,14 @@ export default function ExpenseForm({ expense }: ExpenseFormProps) {
   const [taxDeductible, setTaxDeductible] = useState(
     expense?.taxDeductible ?? true
   );
+
+  const { allCategories, customCategories, addCategory, removeCategory } = useCategories();
+  const [vendors, setVendors] = useState<SavedVendor[]>([]);
+  const [newCategoryLabel, setNewCategoryLabel] = useState("");
+
+  useEffect(() => {
+    getSavedVendors().then(setVendors).catch(() => {});
+  }, []);
 
   async function handleImageChange(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
@@ -82,7 +93,7 @@ export default function ExpenseForm({ expense }: ExpenseFormProps) {
 
     const data = {
       propertySlug,
-      category: category as ExpenseCategory,
+      category,
       amount: amountCents,
       description,
       date,
@@ -140,16 +151,63 @@ export default function ExpenseForm({ expense }: ExpenseFormProps) {
           </label>
           <select
             value={category}
-            onChange={(e) => setCategory(e.target.value as ExpenseCategory)}
+            onChange={(e) => setCategory(e.target.value)}
             className={inputClass}
           >
             <option value="">Select category...</option>
-            {Object.entries(EXPENSE_CATEGORIES).map(([key, label]) => (
+            {Object.entries(allCategories).map(([key, label]) => (
               <option key={key} value={key}>
                 {label}
               </option>
             ))}
           </select>
+              <div className="flex items-center gap-2 mt-2">
+                <input
+                  type="text"
+                  value={newCategoryLabel}
+                  onChange={(e) => setNewCategoryLabel(e.target.value)}
+                  placeholder="New category name"
+                  className="flex-1 border border-gray-300 rounded-lg px-3 py-1.5 text-xs"
+                />
+                <button
+                  type="button"
+                  onClick={async () => {
+                    if (!newCategoryLabel.trim()) return;
+                    const saved = await addCategory(newCategoryLabel);
+                    if (saved) {
+                      toast.success(`Category "${saved.label}" added`);
+                      setNewCategoryLabel("");
+                    } else {
+                      toast.error("Category already exists or invalid name");
+                    }
+                  }}
+                  className="text-xs bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium px-3 py-1.5 rounded-lg whitespace-nowrap"
+                >
+                  + Add
+                </button>
+              </div>
+              {customCategories.length > 0 && (
+                <div className="flex flex-wrap gap-1.5 mt-2">
+                  {customCategories.map((c) => (
+                    <span
+                      key={c.id}
+                      className="inline-flex items-center gap-1 text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded-full"
+                    >
+                      {c.label}
+                      <button
+                        type="button"
+                        onClick={async () => {
+                          await removeCategory(c.id);
+                          toast.success(`Category "${c.label}" removed`);
+                        }}
+                        className="text-gray-400 hover:text-red-500"
+                      >
+                        <XMarkIcon className="w-3 h-3" />
+                      </button>
+                    </span>
+                  ))}
+                </div>
+              )}
         </div>
 
         <div>
@@ -195,13 +253,74 @@ export default function ExpenseForm({ expense }: ExpenseFormProps) {
 
       <div>
         <label className={labelClass}>Vendor</label>
-        <input
-          type="text"
-          value={vendor}
-          onChange={(e) => setVendor(e.target.value)}
-          placeholder="e.g., CleanCo Services"
-          className={inputClass}
-        />
+        <div className="flex items-center gap-2">
+          <div className="relative flex-1">
+            <input
+              type="text"
+              list="vendor-list"
+              value={vendor}
+              onChange={(e) => setVendor(e.target.value)}
+              placeholder="Select or type vendor"
+              className={inputClass}
+            />
+            <datalist id="vendor-list">
+              {vendors.map((v) => (
+                <option key={v.id} value={v.name} />
+              ))}
+            </datalist>
+          </div>
+          <button
+            type="button"
+            onClick={async () => {
+              const name = vendor.trim();
+              if (!name) return;
+              if (vendors.some((v) => v.name.toLowerCase() === name.toLowerCase())) {
+                toast.error("Vendor already saved");
+                return;
+              }
+              try {
+                await saveSavedVendor(name);
+                toast.success(`Vendor "${name}" saved`);
+                const updated = await getSavedVendors();
+                setVendors(updated);
+              } catch {
+                toast.error("Failed to save vendor");
+              }
+            }}
+            disabled={!vendor.trim()}
+            className="text-xs bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium px-3 py-2.5 rounded-lg whitespace-nowrap disabled:opacity-40"
+          >
+            Save Vendor
+          </button>
+        </div>
+        {vendors.length > 0 && (
+          <div className="flex flex-wrap gap-1.5 mt-2">
+            {vendors.map((v) => (
+              <span
+                key={v.id}
+                className="inline-flex items-center gap-1 text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded-full"
+              >
+                {v.name}
+                <button
+                  type="button"
+                  onClick={async () => {
+                    try {
+                      await deleteSavedVendor(v.id);
+                      toast.success(`Vendor "${v.name}" removed`);
+                      const updated = await getSavedVendors();
+                      setVendors(updated);
+                    } catch {
+                      toast.error("Failed to remove vendor");
+                    }
+                  }}
+                  className="text-gray-400 hover:text-red-500"
+                >
+                  <XMarkIcon className="w-3 h-3" />
+                </button>
+              </span>
+            ))}
+          </div>
+        )}
       </div>
 
       {/* Receipt Photo */}

@@ -7,6 +7,7 @@ import {
   ClipboardDocumentListIcon,
   PlusCircleIcon,
   ArrowLeftIcon,
+  ArrowPathIcon,
   DocumentTextIcon,
   WrenchScrewdriverIcon,
 } from "@heroicons/react/24/outline";
@@ -19,6 +20,7 @@ const navItems = [
     icon: ClipboardDocumentListIcon,
   },
   { href: "/admin/expenses/new", label: "Add Expense", icon: PlusCircleIcon },
+  { href: "/admin/recurring", label: "Recurring", icon: ArrowPathIcon },
   {
     href: "/admin/tax-report",
     label: "Schedule E Report",

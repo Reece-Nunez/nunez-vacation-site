@@ -46,7 +46,7 @@ export default function TaxReportPage() {
     return Object.entries(SCHEDULE_E_LINES)
       .map(([line, { label, categories }]) => {
         const lineExpenses = filtered.filter((e) =>
-          categories.includes(e.category)
+          (categories as string[]).includes(e.category)
         );
         const total = lineExpenses.reduce((sum, e) => sum + e.amount, 0);
         return {
@@ -67,7 +67,7 @@ export default function TaxReportPage() {
     const mapped = new Set(
       Object.values(SCHEDULE_E_LINES).flatMap((l) => l.categories)
     );
-    return filtered.filter((e) => !mapped.has(e.category));
+    return filtered.filter((e) => !mapped.has(e.category as import("@/lib/admin/types").ExpenseCategory));
   }, [filtered]);
 
   function handlePrint() {
